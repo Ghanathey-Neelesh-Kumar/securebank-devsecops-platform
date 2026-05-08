@@ -12,10 +12,13 @@ on:
 
 permissions:
   contents: read
+  packages: write
   security-events: write
-
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  REGISTRY: ghcr.io
+  BACKEND_IMAGE_NAME: ${{ github.repository_owner }}/securebank-backend
+  FRONTEND_IMAGE_NAME: ${{ github.repository_owner }}/securebank-frontend
 
 jobs:
   backend-tests:
@@ -132,11 +135,14 @@ jobs:
           path: securebank-frontend.tar
 
   trivy-image-scan:
-    name: Trivy Image Scan
+    name: Trivy Image Scan and Publish Vulnerabilities
     runs-on: ubuntu-latest
     needs: docker-build
 
     steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
       - name: Download backend image artifact
         uses: actions/download-artifact@v4
         with:
@@ -170,3 +176,35 @@ jobs:
           format: table
           severity: CRITICAL,HIGH
           exit-code: "0"
+
+      - name: Log in to GHCR
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Tag backend image for GHCR
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          docker tag securebank-backend:ci ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:${{ github.sha }}
+          docker tag securebank-backend:ci ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:latest
+
+      - name: Tag frontend image for GHCR
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          docker tag securebank-frontend:ci ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:${{ github.sha }}
+          docker tag securebank-frontend:ci ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:latest
+
+      - name: Push backend image to GHCR
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          docker push ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:${{ github.sha }}
+          docker push ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:latest
+
+      - name: Push frontend image to GHCR
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          docker push ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:${{ github.sha }}
+          docker push ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:latest
