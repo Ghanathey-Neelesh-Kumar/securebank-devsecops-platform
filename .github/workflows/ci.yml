@@ -17,8 +17,8 @@ permissions:
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
   REGISTRY: ghcr.io
-  BACKEND_IMAGE_NAME: ${{ github.repository_owner }}/securebank-backend
-  FRONTEND_IMAGE_NAME: ${{ github.repository_owner }}/securebank-frontend
+  BACKEND_IMAGE_NAME: ghanathey-neelesh-kumar/securebank-backend
+  FRONTEND_IMAGE_NAME: ghanathey-neelesh-kumar/securebank-frontend
 
 jobs:
   backend-tests:
