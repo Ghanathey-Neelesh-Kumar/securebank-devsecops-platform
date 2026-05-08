@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SecureBank</title>
+  <link rel="stylesheet" href="/styles.css?v=securebank-v3" />
+</head>
+<body>
+  <div class="page">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">SB</div>
+        <div>
+          <h1>SecureBank</h1>
+          <p>DevSecOps Banking Platform</p>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a class="active" href="#">Dashboard</a>
+        <a href="#">Accounts</a>
+        <a href="#">Transfers</a>
+        <a href="#">Audit Events</a>
+        <a href="#">Operations</a>
+      </nav>
+
+      <div class="sidebar-card">
+        <span>Environment</span>
+        <strong>Local Compose</strong>
+        <small>Frontend → Backend → PostgreSQL</small>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="header">
+        <div>
+          <p class="eyebrow">Production-style platform</p>
+          <h2>Banking Operations Dashboard</h2>
+        </div>
+
+        <div class="api-status" id="api-status">
+          Checking API...
+        </div>
+      </header>
+
+      <section class="summary-grid">
+        <div class="summary-card">
+          <span>Total Accounts</span>
+          <strong id="total-accounts">--</strong>
+          <small>Active SecureBank accounts</small>
+        </div>
+
+        <div class="summary-card">
+          <span>Total Balance</span>
+          <strong id="total-balance">--</strong>
+          <small>Across all demo accounts</small>
+        </div>
+
+        <div class="summary-card">
+          <span>Transactions</span>
+          <strong id="total-transactions">--</strong>
+          <small>Recorded transfer events</small>
+        </div>
+
+        <div class="summary-card">
+          <span>Audit Events</span>
+          <strong id="total-audit-events">--</strong>
+          <small>Compliance activity trail</small>
+        </div>
+      </section>
+
+      <section class="content-grid">
+        <div class="panel accounts-panel">
+          <div class="panel-header">
+            <div>
+              <h3>Accounts</h3>
+              <p>Live account data from the backend API.</p>
+            </div>
+          </div>
+
+          <div id="accounts" class="accounts-list">
+            Loading accounts...
+          </div>
+        </div>
+
+        <div class="panel transfer-panel">
+          <div class="panel-header">
+            <div>
+              <h3>Money Transfer</h3>
+              <p>Transfer funds between SecureBank accounts.</p>
+            </div>
+          </div>
+
+          <form id="transfer-form" class="transfer-form">
+            <div class="form-row">
+              <label>
+                From Account ID
+                <input type="number" id="from-account" value="1" required />
+              </label>
+
+              <label>
+                To Account ID
+                <input type="number" id="to-account" value="2" required />
+              </label>
+            </div>
+
+            <label>
+              Amount
+              <input type="number" id="amount" value="100.00" step="0.01" min="0.01" required />
+            </label>
+
+            <button type="submit">Transfer Money</button>
+          </form>
+
+          <div id="transfer-result" class="result-box"></div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <div>
+            <h3>Recent Transactions</h3>
+            <p>Database-backed transfer records.</p>
+          </div>
+        </div>
+
+        <div id="transactions" class="table-shell">
+          Loading transactions...
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <div>
+            <h3>Audit Events</h3>
+            <p>Business and security events tracked separately from operational logs.</p>
+          </div>
+        </div>
+
+        <div id="audit-events" class="table-shell">
+          Loading audit events...
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="/app.js?v=securebank-v3"></script>
+</body>
+</html>
