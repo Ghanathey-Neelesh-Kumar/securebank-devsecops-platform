@@ -13,6 +13,11 @@ class Config:
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+    SQLALCHEMY_ENGINE_OPTIONS = {
+        "pool_pre_ping": True,
+        "pool_recycle": 300,
+    }
+
     TESTING = False
     JSON_SORT_KEYS = False
 
@@ -29,6 +34,7 @@ class TestingConfig(Config):
     TESTING = True
     DEBUG = False
     SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
+    SQLALCHEMY_ENGINE_OPTIONS = {}
 
 
 def get_config():
