@@ -6,3 +6,4 @@ COPY default.conf.template /etc/nginx/templates/default.conf.template
 COPY src/ /usr/share/nginx/html/
 
 EXPOSE 80
+

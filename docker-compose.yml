@@ -50,7 +50,7 @@ services:
     environment:
       BACKEND_UPSTREAM: http://backend:5000
     ports:
-      - "8081:80"
+      - "8081:8080"
     depends_on:
       - backend
     networks:
