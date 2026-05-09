@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: securebank-postgres
+  namespace: securebank-dev
+  labels:
+    app: securebank-postgres
+    app.kubernetes.io/name: securebank-postgres
+    app.kubernetes.io/component: database
+    app.kubernetes.io/part-of: securebank
+    securebank.io/environment: dev
+spec:
+  serviceName: securebank-postgres
+  replicas: 1
+  selector:
+    matchLabels:
+      app: securebank-postgres
+  template:
+    metadata:
+      labels:
+        app: securebank-postgres
+        app.kubernetes.io/name: securebank-postgres
+        app.kubernetes.io/component: database
+        app.kubernetes.io/part-of: securebank
+        securebank.io/environment: dev
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16-alpine
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5432
+              name: postgres
+          envFrom:
+            - secretRef:
+                name: securebank-postgres-secret
+          readinessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - pg_isready -U "$POSTGRES_USER" -d "$POSTGRES_DB"
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 6
+          livenessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - pg_isready -U "$POSTGRES_USER" -d "$POSTGRES_DB"
+            initialDelaySeconds: 30
+            periodSeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 6
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          volumeMounts:
+            - name: postgres-data
+              mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+    - metadata:
+        name: postgres-data
+        labels:
+          app: securebank-postgres
+          app.kubernetes.io/name: securebank-postgres
+          app.kubernetes.io/component: database
+          app.kubernetes.io/part-of: securebank
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
