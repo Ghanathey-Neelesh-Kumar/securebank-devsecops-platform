@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: securebank-frontend
+  namespace: securebank-dev
+  labels:
+    app: securebank-frontend
+    app.kubernetes.io/name: securebank-frontend
+    app.kubernetes.io/component: frontend
+    app.kubernetes.io/part-of: securebank
+    securebank.io/environment: dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: securebank-frontend
+  template:
+    metadata:
+      labels:
+        app: securebank-frontend
+        app.kubernetes.io/name: securebank-frontend
+        app.kubernetes.io/component: frontend
+        app.kubernetes.io/part-of: securebank
+        securebank.io/environment: dev
+    spec:
+      containers:
+        - name: frontend
+          image: ghcr.io/ghanathey-neelesh-kumar/securebank-frontend:latest
+          imagePullPolicy: Always
+          env:
+            - name: BACKEND_UPSTREAM
+              value: "http://securebank-backend:5000"
+          ports:
+            - containerPort: 80
+              name: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            timeoutSeconds: 3
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
