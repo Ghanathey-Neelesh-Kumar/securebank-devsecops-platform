@@ -27,9 +27,6 @@ spec:
         - name: frontend
           image: ghcr.io/ghanathey-neelesh-kumar/securebank-frontend:latest
           imagePullPolicy: Always
-          env:
-            - name: BACKEND_UPSTREAM
-              value: "http://securebank-backend:5000"
           ports:
             - containerPort: 8080
               name: http
@@ -39,16 +36,12 @@ spec:
               port: 8080
             initialDelaySeconds: 5
             periodSeconds: 10
-            timeoutSeconds: 3
-            failureThreshold: 3
           livenessProbe:
             httpGet:
               path: /
               port: 8080
             initialDelaySeconds: 15
             periodSeconds: 20
-            timeoutSeconds: 3
-            failureThreshold: 3
           resources:
             requests:
               cpu: 50m
@@ -56,11 +49,10 @@ spec:
             limits:
               cpu: 250m
               memory: 256Mi
-          securityContexti:
+          securityContext:
             runAsNonRoot: true
             runAsUser: 101
             runAsGroup: 101
-            readOnlyRootFilesystem: false
             allowPrivilegeEscalation: false
             capabilities:
               drop:

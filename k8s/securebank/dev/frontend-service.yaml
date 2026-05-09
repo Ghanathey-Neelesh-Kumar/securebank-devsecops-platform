@@ -3,12 +3,6 @@ kind: Service
 metadata:
   name: securebank-frontend
   namespace: securebank-dev
-  labels:
-    app: securebank-frontend
-    app.kubernetes.io/name: securebank-frontend
-    app.kubernetes.io/component: frontend
-    app.kubernetes.io/part-of: securebank
-    securebank.io/environment: dev
 spec:
   type: ClusterIP
   selector:

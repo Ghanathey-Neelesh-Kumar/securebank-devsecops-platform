@@ -19,7 +19,7 @@ services:
     networks:
       - securebank-network
 
-  backend:
+  securebank-backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -52,7 +52,7 @@ services:
     ports:
       - "8081:8080"
     depends_on:
-      - backend
+      - securebank-backend
     networks:
       - securebank-network
 
