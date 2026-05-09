@@ -47,6 +47,8 @@ services:
     image: securebank-frontend:local
     container_name: securebank-frontend
     restart: unless-stopped
+    environment:
+      BACKEND_UPSTREAM: http://backend:5000
     ports:
       - "8081:80"
     depends_on:

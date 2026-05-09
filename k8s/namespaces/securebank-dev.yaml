@@ -7,4 +7,3 @@ metadata:
     app.kubernetes.io/part-of: securebank-platform
     securebank.io/tier: application
     securebank.io/environment: dev
-    istio-injection: enabled

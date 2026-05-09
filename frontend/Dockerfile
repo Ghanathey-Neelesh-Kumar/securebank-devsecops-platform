@@ -1,6 +1,8 @@
 FROM nginx:1.27-alpine
 
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+ENV BACKEND_UPSTREAM=http://backend:5000
+
+COPY default.conf.template /etc/nginx/templates/default.conf.template
 COPY src/ /usr/share/nginx/html/
 
 EXPOSE 80
