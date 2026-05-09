@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: securebank-staging
+  labels:
+    name: securebank-staging
+    app.kubernetes.io/part-of: securebank-platform
+    securebank.io/tier: application
+    securebank.io/environment: staging
+    istio-injection: enabled

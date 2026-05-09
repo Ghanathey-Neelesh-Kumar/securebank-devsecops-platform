@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: securebank-prod
+  labels:
+    name: securebank-prod
+    app.kubernetes.io/part-of: securebank-platform
+    securebank.io/tier: application
+    securebank.io/environment: prod
+    istio-injection: enabled
