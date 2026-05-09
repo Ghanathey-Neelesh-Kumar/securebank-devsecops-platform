@@ -1,0 +1,25 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: securebank-frontend
+  namespace: securebank-dev
+  labels:
+    app: securebank-frontend
+    app.kubernetes.io/name: securebank-frontend
+    app.kubernetes.io/component: frontend
+    app.kubernetes.io/part-of: securebank
+    securebank.io/environment: dev
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: securebank-frontend
+  minReplicas: 2
+  maxReplicas: 4
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
