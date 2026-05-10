@@ -15,3 +15,9 @@ resources:
   - frontend-service.yaml
   - frontend-hpa.yaml
   - frontend-pdb.yaml
+  - default-deny-ingress.yaml
+  - allow-frontend-to-backend.yaml
+  - allow-backend-to-postgres.yaml
+  - allow-dns-egress.yaml
+  - allow-frontend-egress-to-backend.yaml
+  - allow-backend-egress-to-postgres.yaml

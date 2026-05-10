@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-backend-egress-to-postgres
+  namespace: securebank-dev
+  labels:
+    app.kubernetes.io/part-of: securebank
+    securebank.io/environment: dev
+spec:
+  podSelector:
+    matchLabels:
+      app: securebank-backend
+  policyTypes:
+    - Egress
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              app: securebank-postgres
+      ports:
+        - protocol: TCP
+          port: 5432
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+      ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53

@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-frontend-to-backend
+  namespace: securebank-dev
+  labels:
+    app.kubernetes.io/part-of: securebank
+    securebank.io/environment: dev
+spec:
+  podSelector:
+    matchLabels:
+      app: securebank-backend
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: securebank-frontend
+      ports:
+        - protocol: TCP
+          port: 5000
