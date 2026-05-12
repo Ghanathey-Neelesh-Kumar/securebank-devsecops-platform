@@ -10,3 +10,4 @@ resources:
   - securebank-dev.yaml
   - securebank-staging.yaml
   - securebank-prod.yaml
+  - traefik.yaml

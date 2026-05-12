@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: securebank
+  namespace: securebank-dev
+  labels:
+    app.kubernetes.io/name: securebank
+    app.kubernetes.io/part-of: securebank
+    securebank.io/environment: dev
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: securebank.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: securebank-frontend
+                port:
+                  number: 80
